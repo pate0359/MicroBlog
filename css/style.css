@@ -90,12 +90,14 @@ body {
 
 /* Set the fixed height of the footer here */
 #footer {
-	margin-top: 15px;
+/*	margin-top: 0px;*/
   height: 60px;
   background-color: #337AB7;
 	color: #eee;
-	bottom: 0;
-	padding-bottom: 60px;
+/*	top: 0;*/
+/*	margin-bottom: 20px;*/
+/*	bottom: 0;*/
+/*	padding-bottom: 60px;*/
 }
 
 /*
@@ -105,3 +107,18 @@ body {
 	background-color: #337AB7;
 }
 */
+#err_dialog {
+	position: absolute;
+	z-index: 9999;
+	top: 0;
+	left: 0;
+	right: 0;
+	background: #3498db;
+	text-align: center;
+	line-height: 2.5;
+	overflow: hidden;
+	color: white;
+	-webkit-box-shadow: 0 0 5px black;
+	-moz-box-shadow: 0 0 5px black;
+	box-shadow: 0 0 5px black;
+}

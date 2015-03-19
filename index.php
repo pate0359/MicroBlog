@@ -1,4 +1,5 @@
 <?PHP
+ob_start(); 
 	if (session_status() == PHP_SESSION_NONE) {
     	session_start();
 	}
@@ -11,7 +12,7 @@ if(isset($_SESSION['login_user']))
 	$nav='<div id="pageNav" class="row margin-top-2 col-lg-10 col-lg-offset-1">
 							<div class="nav navbar navbar-right">
 							<form class="navbar-form ">
-							<label class="control-label margin-left-10 margin-right-20" for="parameterValue">Welcome '.$_SESSION['login_user'].' !</label>
+							<label class="control-label margin-left-10 margin-right-20" for="parameterValue"><h4>Welcome '.$_SESSION['login_user'].' !</h4></label>
 							<input type="submit" name="btnSignOut" value="Sign Out" class="btn btn-default">
 							</form>
 							</div>
@@ -59,35 +60,17 @@ if(isset($_SESSION['login_user']))
 				</div>
 			</div>
 <!--			</div>-->
-			
-
 			<div class="row margin-top-2">
 				<div class="col-lg-10 col-lg-offset-1">
-					
-					<h1>News Feed </h1>
-					<hr>
-					</br>
-				</div>
-			</div>
-
-		<div class="messageview">
-
-			<?PHP
-				fetchMessage(); //echo $messages;
-			?>
-
-		</div>
-		</div>
-
-	<?PHP 
+			<?PHP 
 		if(isset($_SESSION['login_user']))
 		{
 			$footer='<div id="footer">
 			<div class="container">
 			<div class="row col-lg-10 col-lg-offset-1">
 			<form class="navbar-form" method="POST" action="index.php">
-			<div class="form-group form-group-lg">
-			<input type="text" name="message" id="message" class="form-control input-lg chat-input" placeholder="Say something!">
+			<div class="form-group-lg col-lg-8">
+			<input type="text" name="message" id="message" class="form-control input-xlg chat-input" placeholder="Share your thought !">
 			</div>
 			<input type="submit" name="Post" value="Post" class="btn btn-default input-lg">
 			</form>
@@ -97,7 +80,29 @@ if(isset($_SESSION['login_user']))
 			echo $footer;
 		}
 	?>
+				</div>
+			</div>
+			
+
+			<div class="row margin-top-2">
+				<div class="col-lg-10 col-lg-offset-1">
+					
+					<h1>News Feed </h1>
+<!--					<hr>-->
+					</br>
+				</div>
+			</div>
+
+		<div class="messageview">
+			<div class="col-lg-10 col-lg-offset-1">
+			<?PHP
+				fetchMessage(); //echo $messages;
+			?>
+				</div>
+		</div>
+		</div>	
 	
+	<div id="err_dialog"></div>
 	</div>
 
 	<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
@@ -106,6 +111,7 @@ if(isset($_SESSION['login_user']))
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/index.js"></script>
+	<script type="text/javascript" src="js/error.js"></script>
 	
 </body>
 

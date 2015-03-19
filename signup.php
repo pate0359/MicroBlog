@@ -1,4 +1,8 @@
 <?PHP
+ob_start(); 
+if (session_status() == PHP_SESSION_NONE) {
+    	session_start();
+}
 
 if (isset($_REQUEST['signedUp'])) //here give the name of your button on which you would like to perform action.
 {
@@ -35,21 +39,24 @@ function  signUp(){
 			// If result matched $myusername and $mypassword, table row must be 1 row
 			if($count==1)
 			{
-				echo "Username exist. Please choose another one.";
+				$err="Username exist. Please choose another one.";
+				echo "<script type=\"text/javascript\">errorMessage(); </script>" ;
 			}
 			else
 			{
 				try
 				{
 					$sql= "INSERT INTO users (user_name,user_hash) VALUES ('".$myusername."','".$mypassword."')";
-					//echo $sql;
+					echo $sql;
 					$pdo_link->exec($sql);
 
 					$last_id = $pdo_link->lastInsertId();
 					$_SESSION['user_id']=$last_id;
-				
-					//echo $last_id;
-					header("Location:index.php");
+					$_SESSION['login_user']=$myusername;
+					
+//					echo $_SESSION['user_id'];
+//					echo $_SESSION['login_user'];
+					header("location:index.php");
 					
 				}catch(PDOException $e)
 				{
@@ -112,7 +119,7 @@ function  cancel(){
 						<input type="text" id="userName" name="userName" class="form-control chat-input" placeholder="name" />
 						</br>
 						<label class="control-label" for="parameterValue">Password</label>
-						<input type="text" id="userPassword" name="userPassword" class="form-control chat-input" placeholder="password" />
+						<input type="password" id="userPassword" name="userPassword" class="form-control chat-input" placeholder="password" />
 						</br>
 <!--						<div class="wrapper">-->
 							<div class="col-lg-8 col-md-10 col-sm-8 col-xs-10 col-lg-offset-4 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 margin-top-20 margin-bottom-20">
@@ -130,6 +137,7 @@ function  cancel(){
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/signup.js"></script>
+	<script src="js/error.js"></script>
 </body>
 
 </html>

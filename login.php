@@ -1,6 +1,6 @@
 <?PHP 
+ob_start(); 
 			
-	
 	if (isset($_REQUEST['Submit'])) //here give the name of your button on which you would like    //to perform action.
 	{
 		 login();
@@ -140,13 +140,19 @@ function fetchMessage()
 	$result = $pdo_link->query($sql);
 	$row = $result->fetch(PDO::FETCH_ASSOC);
 	
+	$count = $result->rowCount();
+	if($count == 0)
+	{
+		$messages="Be first to share your thought ! ";
+	}
+	
 	 while( $row = $result->fetch() )
      {
 		 $userName=getUserName($row['user_id']);
 		 $timestamp= $row['time_stamp'];
 		 
 //		 $datetime = date('Y-m-j g:i:s', $timestamp);
-		 $datetime = date("Y-m-j g:i:s",strtotime($timestamp));
+		 $datetime = date("Y-m-j g:i a",strtotime($timestamp));
 		 
 //		 echo $datetime;
 		 $messages = $messages . "<div class=\"row margin-top-2\">
@@ -173,6 +179,5 @@ function getUserName($userId)
 	$username = $row['user_name'];
 //	echo $username;
 	return $username;
-	}
-	
+	}	
 ?>
