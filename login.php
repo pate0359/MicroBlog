@@ -57,13 +57,13 @@ function login()
 			}
 			else
 			{
-				$error="Username or password is invalid.";
-//				echo $error;
+				$error="<p class=\"errorP\">Username or password is invalid.</p>";
+				echo $error;
 			}
 	}else
 	{
-		
-		echo "Enter username and password";
+		$error="<p class=\"errorP\">Enter username and password</p>";
+		echo $error;
 	}
 }
 
@@ -124,7 +124,8 @@ function postText()
 				}
 	}else
 	{
-		echo "Enter message to post";
+		$error="<p class=\"errorP\">Enter message to post.</p>";
+		echo $error;
 	}
 }
 
@@ -135,7 +136,8 @@ function fetchMessage()
 	include("config.php");
 	$messages="";
 	
-	$sql="SELECT * FROM messages";
+//	$sql="SELECT * FROM messages.message_text,messages.time_stamp, users.user_name FROM messages INNER JOIN ON messages.user_id=users.usr_id ";
+	$sql ="SELECT * FROM messages INNER JOIN users ON messages.user_id=users.user_id";
 //	echo $sql;
 	$result = $pdo_link->query($sql);
 	$row = $result->fetch(PDO::FETCH_ASSOC);
@@ -148,8 +150,10 @@ function fetchMessage()
 	
 	 while( $row = $result->fetch() )
      {
-		 $userName=getUserName($row['user_id']);
+		 //$userName=getUserName($row['user_id']);
 		 $timestamp= $row['time_stamp'];
+		 $username = $row['user_name'];
+//		 echo $username;
 		 
 //		 $datetime = date('Y-m-j g:i:s', $timestamp);
 		 $datetime = date("Y-m-j g:i a",strtotime($timestamp));
@@ -157,7 +161,7 @@ function fetchMessage()
 //		 echo $datetime;
 		 $messages = $messages . "<div class=\"row margin-top-2\">
 				<div class=\"col-lg-12 col-lg-10 col-lg-offset-1\">
-					<label class=\"control-label\" for=\"parameterValue\">".$userName."</label>
+					<label class=\"control-label\" for=\"parameterValue\">".$username."</label>
 					<p>".$row['message_text']."</p>
 					<label class=\"control-label navbar-right margin-right-10\" for=\"parameterValue\">".$datetime."</label>
 				</div>
@@ -168,16 +172,16 @@ function fetchMessage()
 	echo $messages;
 }
 
-function getUserName($userId)
-{
-	include("config.php");
-	
-	$sql="SELECT user_name FROM users WHERE user_id=".$userId."";
-//	echo $sql;
-	$result = $pdo_link->query($sql);
-	$row = $result->fetch(PDO::FETCH_ASSOC);
-	$username = $row['user_name'];
-//	echo $username;
-	return $username;
-	}	
+//function getUserName($userId)
+//{
+//	include("config.php");
+//	
+//	$sql="SELECT user_name FROM users WHERE user_id=".$userId."";
+////	echo $sql;
+//	$result = $pdo_link->query($sql);
+//	$row = $result->fetch(PDO::FETCH_ASSOC);
+//	$username = $row['user_name'];
+////	echo $username;
+//	return $username;
+//	}	
 ?>

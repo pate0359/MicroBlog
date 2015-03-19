@@ -39,8 +39,9 @@ function  signUp(){
 			// If result matched $myusername and $mypassword, table row must be 1 row
 			if($count==1)
 			{
-				$err="Username exist. Please choose another one.";
-				echo "<script type=\"text/javascript\">errorMessage(); </script>" ;
+				$err="<p class=\"errorP\">Username exist. Please choose another one.</p>";
+				
+				echo $err; //"<script type=\"text/javascript\">errorMessage(); </script>" ;
 			}
 			else
 			{
@@ -65,8 +66,8 @@ function  signUp(){
 			}
 	}else
 	{
-		
-		echo "Enter username and password";
+		$error="<p class=\"errorP\">Enter username and password</p>";
+		echo $error;
 	}
 }
 
@@ -134,6 +135,7 @@ function  cancel(){
 		</div>
 	</div>
 
+	<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/signup.js"></script>
