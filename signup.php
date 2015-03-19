@@ -27,11 +27,11 @@ function  signUp(){
 			$mypassword = md5($mypassword);
 
 			$sql="SELECT * FROM users WHERE user_name='$myusername' and user_hash='$mypassword'";
-			echo $sql;
+			//echo $sql;
 			$result = $pdo_link->query($sql);
 			$count = $result->rowCount();
 
-		echo $count;
+		//echo $count;
 			// If result matched $myusername and $mypassword, table row must be 1 row
 			if($count==1)
 			{
@@ -42,13 +42,13 @@ function  signUp(){
 				try
 				{
 					$sql= "INSERT INTO users (user_name,user_hash) VALUES ('".$myusername."','".$mypassword."')";
-					echo $sql;
+					//echo $sql;
 					$pdo_link->exec($sql);
 
 					$last_id = $pdo_link->lastInsertId();
 					$_SESSION['user_id']=$last_id;
 				
-					echo $last_id;
+					//echo $last_id;
 					header("Location:index.php");
 					
 				}catch(PDOException $e)
