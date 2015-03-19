@@ -3,6 +3,7 @@ $mysql_hostname = "localhost";
 $mysql_database = "microblog";
 $mysql_user = "root";
 $mysql_password = "root";
+$error="";
 
 try
 {
@@ -11,7 +12,7 @@ try
 	
 }catch(PDOException $err)
 {
-	echo "Database connection error : ".$err->getMessage();
+	$GLOBALS['error'] = "Database connection error : ".$err->getMessage();
 }
 
 //$bd = mysql_connect($mysql_hostname, $mysql_user, $mysql_password) or die("Opps some thing went wrong");

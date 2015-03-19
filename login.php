@@ -1,5 +1,6 @@
 <?PHP 
 ob_start(); 
+$error="";
 			
 	if (isset($_REQUEST['Submit'])) //here give the name of your button on which you would like    //to perform action.
 	{
@@ -12,6 +13,7 @@ ob_start();
 	}else if (isset($_REQUEST['Post'])){
 
 		postText();
+		
 	}else if (isset($_REQUEST['btnSignUp'])){
 
 		header('Location:signup.php');
@@ -39,8 +41,6 @@ function login()
 			$sql="SELECT * FROM users WHERE user_name='$myusername' and user_hash='$mypassword'";
 			//echo $sql;
 			$result = $pdo_link->query($sql);
-				
-			
 			$count = $result->rowCount();
 		
 
@@ -52,18 +52,18 @@ function login()
 				$userId=$row['user_id'];				
 				$_SESSION['user_id']=$userId;
 				$_SESSION['login_user']=$myusername;
-				echo $userId;
+//				echo $userId;
 				//header("location:index.php");
 			}
 			else
 			{
-				$error="<p class=\"errorP\">Username or password is invalid.</p>";
-				echo $error;
+				$GLOBALS['error']="Username or password is invalid.";
+//				echo $error;
 			}
 	}else
 	{
-		$error="<p class=\"errorP\">Enter username and password</p>";
-		echo $error;
+		$GLOBALS['error']="Enter username and password";
+//		echo $error;
 	}
 }
 
@@ -87,45 +87,32 @@ function logOut()
 /******************** post message ******************/
 function postText()
 {
-//	//echo date_default_timezone_get();
-//	date_default_timezone_set('America/New_York');
-//	$today = date("F-j-Y, g:i:s"); 
-//	echo $today;
-	
-//	$time = currentt();
-//	echo $time;
-	
 	include("config.php");
 	$umsg = isset($_POST['message']) ? $_POST['message'] : '';
 	$userId=isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
-//	echo umsg;
-//	echo "userIs - ".$userId;
 	
 	if ($umsg != '' && $userId != '')
 	{
 		include("config.php");
-
-		// user mesasge
-			$message=addslashes($umsg);
+		$message=addslashes($umsg);
 			try
 				{
 					$sql= "INSERT INTO messages (message_text,user_id,time_stamp) VALUES ('".$message."','".$userId."',CURRENT_TIMESTAMP)";
 					//echo $sql;
 					$pdo_link->exec($sql);
-
 					$last_id = $pdo_link->lastInsertId();
-				
 					//echo $last_id;
-//					header("Location:index.php");
+					header("Location:index.php");
 					
 				}catch(PDOException $e)
 				{
-					echo $sql . "<br>" . $e->getMessage();
+					$GLOBALS['error'] = $sql . "<br>" . $e->getMessage();
+					//echo $error;
 				}
 	}else
 	{
-		$error="<p class=\"errorP\">Enter message to post.</p>";
-		echo $error;
+		$GLOBALS['error']="Enter message to post.";
+//		echo $error;
 	}
 }
 
@@ -136,29 +123,22 @@ function fetchMessage()
 	include("config.php");
 	$messages="";
 	
-//	$sql="SELECT * FROM messages.message_text,messages.time_stamp, users.user_name FROM messages INNER JOIN ON messages.user_id=users.usr_id ";
 	$sql ="SELECT * FROM messages INNER JOIN users ON messages.user_id=users.user_id";
-//	echo $sql;
-	$result = $pdo_link->query($sql);
-	$row = $result->fetch(PDO::FETCH_ASSOC);
-	
+	//echo $sql;
+	$result = $pdo_link->query($sql);	
 	$count = $result->rowCount();
+	
 	if($count == 0)
 	{
-		$messages="Be first to share your thought ! ";
+		$messages="<p>Be first to share your thought ! </p>";
 	}
 	
-	 while( $row = $result->fetch() )
+	 while( $row = $result->fetch(PDO::FETCH_ASSOC))
      {
-		 //$userName=getUserName($row['user_id']);
 		 $timestamp= $row['time_stamp'];
 		 $username = $row['user_name'];
-//		 echo $username;
-		 
-//		 $datetime = date('Y-m-j g:i:s', $timestamp);
 		 $datetime = date("Y-m-j g:i a",strtotime($timestamp));
 		 
-//		 echo $datetime;
 		 $messages = $messages . "<div class=\"row margin-top-2\">
 				<div class=\"col-lg-12 col-lg-10 col-lg-offset-1\">
 					<label class=\"control-label\" for=\"parameterValue\">".$username."</label>
@@ -166,22 +146,9 @@ function fetchMessage()
 					<label class=\"control-label navbar-right margin-right-10\" for=\"parameterValue\">".$datetime."</label>
 				</div>
 			</div><hr>";
-		 
-         //echo "<p>Product Name -> " . $row['message_text'] . "</p>\n\t\t";
      }
+	
 	echo $messages;
 }
 
-//function getUserName($userId)
-//{
-//	include("config.php");
-//	
-//	$sql="SELECT user_name FROM users WHERE user_id=".$userId."";
-////	echo $sql;
-//	$result = $pdo_link->query($sql);
-//	$row = $result->fetch(PDO::FETCH_ASSOC);
-//	$username = $row['user_name'];
-////	echo $username;
-//	return $username;
-//	}	
 ?>

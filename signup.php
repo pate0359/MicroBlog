@@ -1,8 +1,11 @@
 <?PHP
 ob_start(); 
+$error="";
 if (session_status() == PHP_SESSION_NONE) {
     	session_start();
 }
+
+require_once('config.php'); 
 
 if (isset($_REQUEST['signedUp'])) //here give the name of your button on which you would like to perform action.
 {
@@ -15,14 +18,13 @@ if (isset($_REQUEST['signedUp'])) //here give the name of your button on which y
 
 function  signUp(){
 	
-	 $uName = isset($_POST['userName']) ? $_POST['userName'] : '';
-    $uPass = isset($_POST['userPassword']) ? $_POST['userPassword'] : '';
+	include("config.php");
 	
+	$uName = isset($_POST['userName']) ? $_POST['userName'] : '';
+    $uPass = isset($_POST['userPassword']) ? $_POST['userPassword'] : '';
 	
 	if ($uName != '' && $uPass != '')
 	{
-		include("config.php");
-		
 			// username and password sent from Form
 			$myusername=addslashes($uName);
 			$mypassword=addslashes($uPass);		
@@ -35,13 +37,10 @@ function  signUp(){
 			$result = $pdo_link->query($sql);
 			$count = $result->rowCount();
 
-		//echo $count;
 			// If result matched $myusername and $mypassword, table row must be 1 row
 			if($count==1)
 			{
-				$err="<p class=\"errorP\">Username exist. Please choose another one.</p>";
-				
-				echo $err; //"<script type=\"text/javascript\">errorMessage(); </script>" ;
+				$GLOBALS['error']="Username exist. Please choose another one.";
 			}
 			else
 			{
@@ -55,25 +54,21 @@ function  signUp(){
 					$_SESSION['user_id']=$last_id;
 					$_SESSION['login_user']=$myusername;
 					
-//					echo $_SESSION['user_id'];
-//					echo $_SESSION['login_user'];
 					header("location:index.php");
 					
 				}catch(PDOException $e)
 				{
-					echo $sql . "<br>" . $e->getMessage();
+					$GLOBALS['error']=$sql . "<br>" . $e->getMessage();
 				}
 			}
 	}else
 	{
-		$error="<p class=\"errorP\">Enter username and password</p>";
-		echo $error;
+		$GLOBALS['error']="Enter username and password";
+		//echo $error;
 	}
 }
 
 function  cancel(){
-//	echo "cancel";
-//	header('location:index.php');
 	header('Location:index.php');
 }
 
@@ -88,12 +83,21 @@ function  cancel(){
 	<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600,200' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+	<script src="js/error.js"></script>
 
 </head>
 
 <body>
 	<div id="wrap" class="margin-botom-3">
-
+		
+		<?PHP
+			$err = $GLOBALS['error'];		
+			if ($err != '')
+			{
+				echo "<script> errorMessage('$err');</script>" ;
+			}
+		?>
+		
 		<div class="bg"></div>
 
 		<div class="container">
@@ -138,8 +142,7 @@ function  cancel(){
 	<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/signup.js"></script>
-	<script src="js/error.js"></script>
+	
 </body>
 
 </html>

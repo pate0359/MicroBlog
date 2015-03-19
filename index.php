@@ -4,6 +4,8 @@ ob_start();
     	session_start();
 	}
 
+$error="";
+
 include('login.php');
 
 if(isset($_SESSION['login_user']))
@@ -36,8 +38,19 @@ if(isset($_SESSION['login_user']))
 <head>
 	<meta charset="UTF-8">
 	<title>Micro Blog</title>
+	<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+	<script src="js/error.js"></script>
 </head>
 <body>
+<!--	Error dialog-->
+	<?PHP
+		$err = $GLOBALS['error'];		
+		if ($err != '')
+		{
+			echo "<script> errorMessage('$err');</script>" ;
+		}
+	?>
+	
 	<!-- Wrap all page content here -->
 	<div id="wrapper">
 		<div class="container margin-bottom-2">
@@ -82,8 +95,6 @@ if(isset($_SESSION['login_user']))
 	?>
 				</div>
 			</div>
-			
-
 			<div class="row margin-top-2">
 				<div class="col-lg-10 col-lg-offset-1">
 					
@@ -94,7 +105,7 @@ if(isset($_SESSION['login_user']))
 			</div>
 
 		<div class="messageview">
-			<div class="col-lg-10 col-lg-offset-1">
+			<div class="col-lg-10 col-lg-offset-1 messagesubview">
 			<?PHP
 				fetchMessage(); //echo $messages;
 			?>
@@ -107,11 +118,9 @@ if(isset($_SESSION['login_user']))
 
 	<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600,200' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/index.js"></script>
-	<script type="text/javascript" src="js/error.js"></script>
 	
 </body>
 

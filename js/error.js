@@ -1,6 +1,6 @@
-function errorMessage()
+function errorMessage(err)
 {
-	alert(err);
+//	alert("hello");
 	//Error message pop up
 		var errorDiv = document.querySelector("#err_dialog");
 		if (!errorDiv) {
@@ -9,7 +9,7 @@ function errorMessage()
 			document.body.appendChild(errorDiv);
 		}
 		errorDiv.style.display = 'block';
-		errorDiv.innerHTML = "hello"; //err;
+		errorDiv.innerHTML =err;  "Hi!";
 		//set timeout for error msg
 		setTimeout(function () {
 			errorDiv.style.display = 'none';
